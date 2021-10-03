@@ -1,0 +1,14 @@
+
+# File name: COMMON_(Read_this_before_you_start)_
+
+# Last update: Tue Sep 21 14:53:46 JST 2021 by @hohno_at_kuimc
+
+In this folder, you need to prepare a symbolic link from the directory where the contents of COMMON are available to here. The name of the symbolic link should be "COMMON".
+
+
+The following is one example:
+
+  COMMON -> ../cZone--Arduino--COMMON/src/All_Arduinos
+
+
+-EOF-
