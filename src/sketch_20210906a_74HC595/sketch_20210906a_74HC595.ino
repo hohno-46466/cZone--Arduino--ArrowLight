@@ -1,5 +1,5 @@
 //
-// hohno-ACS-2021R.Linux/sketch_20210906a_74HC595
+// sketch_20210906a_74HC595
 //
 
 // Prev update: Fri Sep 10 22:28:35 JST 2021
@@ -7,7 +7,14 @@
 
 // ---------------------------------------------------------
 
-// ARDUINO UNO + AE-7SEG-BOARD * 2
+// Hardware: ARDUINO UNO + AE-7SEG-BOARD * 2
+
+// Description: Read the lines of the following format and perform the actions corresponding to each value.
+//              Format: val1 val2 val3 val4[LF]
+//                      val1 - Light turn on furation (-1, 0, 1..32767)
+//                      val2 - Buzzer turn on duration (-1, 0, 1..32767)
+//                      val3 - 7segment LED 1 (tens place) (0..37) // 37 == (sizeof digits) / (sizeof digits[0]) - 1
+//                      val4 - 7segment LED 2 (ones place) (0..37)
 
 // ---------------------------------------------------------
 
@@ -16,14 +23,16 @@
 #define BUFFSIZE    (32)
 char buff[BUFFSIZE];
 
-const int PIN_SCK   = 13; // 9;
+const int PIN_SCK   = 13; //  9;
 const int PIN_SDI   = 11; // 10;
-const int PIN_LATCH =  8; // 8;
+const int PIN_LATCH =  8; //  8;
 
 const int PIN_RELAY = A0;
 const int PIN_BEEP  = 12; // 10
 const int PIN_TONE  =  9;
-const int PIN_LED   = 13;
+const int PIN_LED   = 13; // Overlapped with PIN_SCK
+const int PIN_AUX   =  7;
+const int PIN_GND   =  6;
 
 // int scroll_speed = 400;
 
@@ -93,13 +102,17 @@ void setup() {
   pinMode(PIN_LED,  OUTPUT);
   pinMode(PIN_BEEP, OUTPUT);
   pinMode(PIN_RELAY,OUTPUT);
+	pinMode(PIN_AUX,  OUTPUT);
+	pinMode(PIN_GND,  OUTPUT);
+
   digitalWrite(PIN_LED,  HIGH); // ON
   digitalWrite(PIN_BEEP, LOW);  // OFF
   digitalWrite(PIN_RELAY,HIGH); // OFF (negative logic)
+  digitalWrite(PIN_AUX,  LOW);  // OFF
+	digitalWrite(PIN_GND,  LOW);  // OFF (pseudo GND)
 
   for(int i = 0; i < BUFFSIZE; i++) {
-    buff[i] = '\0'
-      ;
+    buff[i] = '\0';
   }
   pinMode(PIN_LATCH, OUTPUT);
   digitalWrite(PIN_LATCH, 1);
@@ -148,12 +161,22 @@ uint32_t endTime4  = 0; // LED に値を表示し終えたあとのガードタ�
 
 int cnt = 0;
 int d10 = 0, d01 = 0;
+boolean flagLED = false;
 
 void loop() {
 
   int val1 = 0, val2 = 0;
   static int prev1 = -9; // , prev2 = -9;
   static boolean flag = false;
+  int32_t tmpT = (millis() / 1000) % 2;
+
+	if ((flagLED == false) && (tmpT == 1)) {
+		flagLED = true;
+		digitalWrite(PIN_LED, flagLED);
+	} else if ((flagLED == true) && (tmpT == 0)) {
+		flagLED = false;
+		digitalWrite(PIN_LED, flagLED);
+	}
 
   if (Serial.available() > 0) {
 
