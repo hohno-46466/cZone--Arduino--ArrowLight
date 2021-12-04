@@ -3,7 +3,8 @@
 //
 
 // Prev update: Fri Sep 10 22:28:35 JST 2021
-// Last update: Tue Nov 30 21:21:15 JST 2021 by @hohno_at_kuimc
+// Prev update: Tue Nov 30 21:21:15 JST 2021 by @hohno_at_kuimc
+// Last update: Sat Dec  4 22:43:17 JST 2021 by  @hohno_at_kuimc
 
 // ---------------------------------------------------------
 
@@ -37,17 +38,17 @@ const int PIN_GND   =  6;
 // int scroll_speed = 400;
 
 /*
-     A
-    ---
- F | G |B
-    ---
- E |   |C
-    ---  dp
-     D
+ *      A
+ *     ===
+ *  F | G |B
+ *     ===
+ *  E |   |C
+ *     ===  dp
+ *      D
  */
 
 const byte digits[] = {
-// This config.    // Original Data
+// For this H/W    // Original Data
 //  ABCEDFG.       //   ABCDEFG.
   0b11111100, // 0 // 0b11111100, // 0 // ABCDEF__
   0b01100000, // 1 // 0b01100000, // 1 // _BC_____
@@ -82,13 +83,19 @@ const byte digits[] = {
   0b10000000, // ~ // 0b10000000, // ~ // A_______
   0b00000010, // - // 0b00000010, // - // ______G_
   0b00001000, // _ // 0b00010000, // _ // ___D___
-  0b10001010, // ≡// 0b10010010, // ≡// A__D__G_
+  0b10001010, // ≡ // 0b10010010, // ≡ // A__D__G_
   0b01010010, // / // 0b01001010, // / // _B__E_G_
   0b00000000, //   // 0b00000000, //   // ________
   0b00000001, // . // 0b00000001, // . // ________
 };
 
-#define INDEX_SPC   (NN-2)      // ← ガードタイム時に使用
+#define INDEX_DOT   (NN-1)      	// ← ドット
+#define INDEX_SPC   (NN-2)      	// ← 空白
+#define INDEX_UDB   (NN-5)      	// ← 下線
+#define INDEX_DASH  (NN-6)      	// ← マイナス
+
+#define INDEX_GDT10	INDEX_SPC		// ガードタイム時に表示する文字（10の位）
+#define INDEX_GDT01	INDEX_SPC		// ガードタイム時に表示する文字（1の位）
 
 // ---------------------------------------------------------
 // setup()
@@ -304,8 +311,8 @@ void loop() {
   } else if (endTime4 > tmpT) {
     // ガードタイム中．両桁とも INDEX_SPC を表示
     digitalWrite(PIN_LATCH, 0);
-    SPI.transfer (digits[INDEX_SPC] + 0); // 10の桁 (+1でドット表示)
-    SPI.transfer (digits[INDEX_SPC] + 0); //  1の桁 (+1でドット表示)
+    SPI.transfer (digits[INDEX_GDT10] + 0); // 10の桁 (+1でドット表示)
+    SPI.transfer (digits[INDEX_GDT01] + 0); //  1の桁 (+1でドット表示)
     digitalWrite(PIN_LATCH, 1);
 
   } else {
