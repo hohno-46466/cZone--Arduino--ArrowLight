@@ -9,7 +9,7 @@ The name of the symbolic link must be "COMMON".
 
 The following is one example:
 
-  COMMON -> ../cZone--Arduino--COMMON/src/All_Arduinos
+  COMMON -> ../cZone--Arduino--COMMON/src/COMMON
 
 
 -EOF-
