@@ -1,0 +1,1 @@
+../../COMMON/myNewClass.h

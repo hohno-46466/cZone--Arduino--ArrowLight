@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 99doit.sh
+# QQ-74HC595.sh
 
 # Prev update: Wed Oct 27 06:38:35 JST 2021 by @hohno_at_kuimc
 # Last update: Tue Nov 30 20:47:51 JST 2021 by @hohno_at_kuimc
@@ -136,8 +136,10 @@ elif [ "x$syncType" = "xdiff" ]; then
   echo "(diff)"
   echo $(echo diff -r -q ${SRCDIR} ${DSTDIR})
   eval $(echo diff -r -q ${SRCDIR} ${DSTDIR})
+  echo "Return Code = $?"
   echo "(unison)"
   unison -batch -noupdate "$SRCDIR" -noupdate "$DSTDIR" "$SRCDIR" "$DSTDIR"
+  echo "Return Code = $?"
   :
 else
   usage_exit 9
