@@ -14,7 +14,9 @@ PNAME=$(basename $0)
 TARGET="sketch_20210906a_74HC595" 
 
 # Never end with "/"
-DIR1="$HOME/Dropbox/Code/Arduino/CommonWorkArea/hohno-ACS-2021R.Linux"
+# DIR1="$HOME/Dropbox/Code/Arduino/CommonWorkArea/hohno-ACS-2021R.Linux"
+# DIR1="$HOME/Dropbox/Code/Arduino/2021"
+DIR1="$HOME/Documents/Arduino/workspace"
 
 # Never end with "/"
 DIR2="$HOME/GitHub/cZone--Arduino--ArrowLight/src"

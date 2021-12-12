@@ -4,7 +4,7 @@
 
 // Prev update: Fri Sep 10 22:28:35 JST 2021
 // Prev update: Tue Nov 30 21:21:15 JST 2021 by @hohno_at_kuimc
-// Last update: Sat Dec    4 22:43:17 JST 2021 by @hohno_at_kuimc
+// Last update: Sat Dec  4 22:43:17 JST 2021 by @hohno_at_kuimc
 
 // ---------------------------------------------------------
 
@@ -12,12 +12,14 @@
 
 // Description: Read the lines of the following format and perform the actions corresponding to each value.
 //              Format: val1 val2 val3 val4[LF]
-//                      val1 - Light turn on furation (-1, 0, 1..32767)
+//                      val1 - Relay(Light) turn on furation (-1, 0, 1..32767)
 //                      val2 - Buzzer turn on duration (-1, 0, 1..32767)
 //                      val3 - 7segment LED 1 (tens place) (0..37) // 37 == (sizeof digits) / (sizeof digits[0]) - 1
 //                      val4 - 7segment LED 2 (ones place) (0..37)
 
 // ---------------------------------------------------------
+
+// #define USE_BGKA
 
 #include <SPI.h>
 #include "myself.h"
@@ -25,18 +27,45 @@
 #define BUFFSIZE    (32)
 char buff[BUFFSIZE];
 
-const int PIN_SCK   = 13; //  9;
-const int PIN_SDI   = 11; // 10;
-const int PIN_LATCH =  8; //  8;
+const int PIN_SCK   = 13; // SCK
+const int PIN_SDO   = 12; // MISO // Not used
+const int PIN_SDI   = 11; // MOSI
+const int PIN_LATCH =  8;
 
-const int PIN_RELAY = A0;
-const int PIN_BEEP  = 12; // 10
-const int PIN_TONE  =    9;
-const int PIN_LED   = 13; // Overlapped with PIN_SCK
-const int PIN_AUX   =  7;
-const int PIN_GND   =  6;
-
-// int scroll_speed = 400;
+#ifdef USE_BGKA
+const int PIN_RELAY =  2; // --> A1?
+const int PIN_BEEP  = 12;
+const int PIN_TONE  =  5; // on GBKA
+const int PIN_LED   =  4; // on GBKA
+const int PIN_AUX   = 10;
+const int PIN_GND   =  9;
+/*
+(1) Pinout on GBKA
+    D2 - (not used)
+    D3 - Temperature & Humidity Sensor on GBKA
+    D4 - LED on GBKA
+    D5 - Piezo Buzzer on GBKA
+    D6 - Button on GBKA
+    D7~13  - (not used)
+    A0 - Rotary Potentiometer
+    A1 - (not used)
+    A2 - Sound
+    A3 - (not used)
+    A4 - I2C SDA
+    A5 - I2C SCK
+    A6 - Light (only on GBKA)
+    A7 - (not used) (only on GBKA)
+(2) PWM on Arduino UNO
+    D3,5,6,9,10
+ */
+#else  // USE_BGKA_AND_SS
+const int PIN_RELAY = A0; // --> A1?
+const int PIN_BEEP  = 12;
+const int PIN_TONE  =  9; // --> 5?
+const int PIN_LED   = 13; // --> 4? // D13 is conflict with SPI SCK
+const int PIN_AUX   =  7; // --> 10?
+const int PIN_GND   =  6; // --> 9?
+#endif // USE_BGKA_AND_SS
 
 /*
  *      A
@@ -90,10 +119,10 @@ const byte digits[] = {
   0b00000001, // . // 0b00000001, // . // ________
 };
 
-#define INDEX_DOT     (NN-1)        // ← ドット
-#define INDEX_SPC     (NN-2)        // ← 空白
-#define INDEX_UDB     (NN-5)        // ← 下線
-#define INDEX_DASH    (NN-6)        // ← マイナス
+#define INDEX_DOT	(NN-1)        // ← ドット
+#define INDEX_SPC	(NN-2)        // ← 空白
+#define INDEX_UDB	(NN-5)        // ← 下線
+#define INDEX_DASH	(NN-6)        // ← マイナス
 
 #define INDEX_d10   INDEX_SPC     // ガードタイム時に表示する文字（10の位）
 #define INDEX_d01   INDEX_SPC     // ガードタイム時に表示する文字（1の位）
@@ -179,9 +208,9 @@ void setup() {
 
 uint32_t endTime1R = 0; // リレー動作終了時刻（起動時からのミリ秒）
 uint32_t endTime1B = 0; // ブザー鳴動終了時刻（起動時からのミリ秒）
-uint32_t endTime2    = 0; // カウントアップ動作中の次の更新時刻（起動時からのミリ秒）
-uint32_t endTime3    = 0; // LED に値を表示する期間の終了時刻（起動時からのミリ秒）
-uint32_t endTime4    = 0; // LED に値を表示し終えたあとの「ガードタイム」の終了時刻（起動時からのミリ秒）
+uint32_t endTime2  = 0; // カウントアップ動作中の次の更新時刻（起動時からのミリ秒）
+uint32_t endTime3  = 0; // LED に値を表示する期間の終了時刻（起動時からのミリ秒）
+uint32_t endTime4  = 0; // LED に値を表示し終えたあとの「ガードタイム」の終了時刻（起動時からのミリ秒）
 
 int cnt = 0;            // ループカウンタ
 int d10 = 0, d01 = 0;     // 7セグメントLED の 10位と1位
@@ -215,7 +244,7 @@ void loop() {
 
     // 読み取った行をスキャンする
 
-    if ((n = sscanf(str.c_str(), "%d %d %d %d", &tmpVal1, &tmpVal2, &tmpd10, &tmpd01)) > 0) { // Light Buzzer Digit1 Digit2
+    if ((n = sscanf(str.c_str(), "%d %d %d %d", &tmpVal1, &tmpVal2, &tmpd10, &tmpd01)) > 0) { // Relay(Light) Buzzer Digit1 Digit2
 
       // この時点で少なくとも n == 1 なのでとりあえず val1 と val2 はスキャンして得た第１文字列にする
       val1 = tmpVal1;
@@ -241,9 +270,9 @@ void loop() {
     }
     // val1 と val2 から endTimeR（リレー用）と endTimeB（ブザー用）を更新
     //
-    // val1 == 0 : turn off the light
-    // val1 > 0  : turn on the light up to val1/10 sec.
-    // val1 < 0  : do nothing for the light
+    // val1 == 0 : turn off the relay(light)
+    // val1 > 0  : turn on the relay(light) up to val1/10 sec.
+    // val1 < 0  : do nothing for the relay(light)
     //
     // val2 == 0 : turn off the buzzer
     // val2 > 0  : turn on the buzzer up to val1/10 sec.
