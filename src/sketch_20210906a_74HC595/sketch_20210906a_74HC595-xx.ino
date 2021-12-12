@@ -249,6 +249,160 @@ boolean flagLED = false;
 
 void loop() {
 
+<<<<<<< HEAD
+  int val1 = 0, val2 = 0;
+  static int prev1 = -9, prev2 = -9;
+  static boolean flag = false;
+  int32_t tmpT = 0;
+
+  // LED の点滅（Arduino UNO 本体の LED（Pin13）は SPI で使っているため別のLED を用意する必要がある）
+  tmpT = (millis() / 1000) % 2;
+  if ((flagLED == false) && (tmpT == 1)) {
+    flagLED = true;
+    digitalWrite(PIN_LED, flagLED);
+  } else if ((flagLED == true) && (tmpT == 0)) {
+    flagLED = false;
+    digitalWrite(PIN_LED, flagLED);
+  }
+
+  // 現在時刻を取得（変数けちらなくていいのに...）
+  tmpT = millis();
+
+  if (Serial.available() > 0) {
+
+    // UART から何か読みだせた場合
+
+    int tmpVal1  = 0, tmpVal2 = 0, tmpd10 = -1, tmpd01 = -1, n = 0;
+
+    String str = Serial.readStringUntil('\n'); // 要再検討：中途半端な（行末文字で終端していない）文字列が送られてくるとここで待機してしまう
+
+    // 読み取った行をスキャンする
+
+    if ((n = sscanf(str.c_str(), "%d %d %d %d", &tmpVal1, &tmpVal2, &tmpd10, &tmpd01)) > 0) { // Light Buzzer Digit1 Digit2
+
+      // この時点で少なくとも n == 1 なのでとりあえず val1 と val2 はスキャンして得た第１文字列にする
+			if (tmpVal1 >= 0) {
+				val1 = tmpVal1;
+				if (n == 1) {
+					// 第1文字列だけだった場合 val2 は val1 と同じ値にするが val1 が -1 だった場合は val2 は更新しないという仕様のための措置
+					val2 = val1;
+				}
+			}
+
+      if (n >= 2) {
+        // n が少なくとも 2 なら val2 は第2文字列にする
+				if (tmpVal2 >= 0) {
+					val2 = tmpVal2;
+				}
+      }
+
+      if (n >= 3) {
+        // n が少なくとも 3 なら d10 は第3文字列にする
+        d10 = tmpd10;
+        // endTime3 と endTime4 を設定（endTIme1R 確定後に調整が入ることがある）
+        endTime3 = tmpT + DISPLAY_TIME;
+        endTime4 = endTime3 + GUARD_TIME;
+        // flag を立てておく（val1 に変化がなくても第３文字列（d10）の指定があったら 7segment LED の表示を更新する必要があるため）
+        flag = true;
+      }
+
+      if (n >= 4) {
+        // n が少なくとも 4 なら d01 は第4文字列にする
+        d01 = tmpd01;
+      }
+    }
+    // val1 と val2 から endTimeR（リレー用）と endTimeB（ブザー用）を更新
+    //
+    // val1 == 0 : turn off the relay (light)
+    // val1 > 0  : turn on the right (light) up to val1/10 sec.
+    // val1 < 0  : do nothing for the relay (light)
+    //
+    // val2 == 0 : turn off the buzzer
+    // val2 > 0  : turn on the buzzer up to val1/10 sec.
+    // val2 < 0  : do nothing for the buzzer
+
+
+    // endTime1R を更新
+    endTime1R = (val1 == 0) ? tmpT : tmpT + 100L * val1;
+    if ((endTime1R - tmpT) > RELAY_LIMIT) {
+      endTime1R = tmpT + RELAY_LIMIT;
+    }
+
+    // endTime3 が短かくなりすぎないように調整
+		//（リレーがオンの間は 7segment LED には指定した文字が表示されているようにするため）
+    if (endTime1R > endTime3) {
+      endTime3 = endTime1R;
+      endTime4 = endTime3 + GUARD_TIME;
+    }
+
+    // endTime1B を更新
+    endTime1B = (val2 == 0) ? tmpT : tmpT + 100L * val2;
+    if ((endTime1B - tmpT) > BEEP_LIMIT) {
+      endTime1B = tmpT + BEEP_LIMIT;
+    }
+
+    // val1 か val2 が更新されていたか flag が立っていたら 取得した情報を表示
+    if ((val1 != prev1) || (val2 != prev2) || flag) {
+      Serial.print(n);    Serial.print(" ");
+      Serial.print(val1); Serial.print(" ");
+      Serial.print(val2); Serial.print(" ");
+      Serial.print(d10);  Serial.print(" ");
+      Serial.print(d01);  Serial.println();
+      // prev1 と prev2 を更新
+      prev1 = val1;
+			prev2 = val2;
+      // flag を下げる
+      flag = false;
+    }
+  }
+
+  // リレーの ON/OFF
+  if (tmpT < endTime1R) {
+    digitalWrite(PIN_RELAY, LOW);
+  } else {
+    digitalWrite(PIN_RELAY, HIGH);
+  }
+
+  // ブザーの ON/OFF
+  if (tmpT < endTime1B) {
+    digitalWrite(PIN_BEEP, HIGH);
+  } else {
+    digitalWrite(PIN_BEEP, LOW);
+  }
+
+  // 7segnent LED の表示を更新
+  if (endTime3 > tmpT) {
+    // タイムアウト前なら d10 と d01 を表示する
+    int j = d10 % NN;
+    int i = d01 % NN;
+    // 7segment LED の表示を更新
+    digitalWrite(PIN_LATCH, 0);
+    SPI.transfer (digits[j] + 0); // 10の桁 (+1でドット表示)
+    SPI.transfer (digits[i] + 0); //  1の桁 (+1でドット表示)
+    digitalWrite(PIN_LATCH, 1);
+
+  } else if (endTime4 > tmpT) {
+    // ガードタイム中．両桁とも INDEX_SPC を表示
+    digitalWrite(PIN_LATCH, 0);
+    SPI.transfer (digits[INDEX_SPC] + 0); // 10の桁 (+1でドット表示)
+    SPI.transfer (digits[INDEX_SPC] + 0); //  1の桁 (+1でドット表示)
+    digitalWrite(PIN_LATCH, 1);
+
+  } else {
+    if (tmpT >= endTime2) {
+      // カウントアップ動作中かつ表示を更新する時期になった
+
+      // endTime2 を更新し，次に表示を更新する時刻を設定
+      endTime2 = tmpT + TIMEOUT2;
+
+      // digits[] の内容をカウントアップ表示
+      int j = (cnt / NN) % NN;
+      int i =  cnt % NN;
+      digitalWrite(PIN_LATCH, 0);
+      SPI.transfer (digits[j] + 1); // 10の桁 (+1でドット表示)
+      SPI.transfer (digits[i] + 1); //  1の桁 (+1でドット表示)
+      digitalWrite(PIN_LATCH, 1);
+=======
 	int val1 = 0, val2 = 0;
 	static int prev1 = -9; // , prev2 = -9;
 	static boolean flag = false;
@@ -445,6 +599,7 @@ void loop() {
 	}
 <<<<<<< HEAD
 }
+>>>>>>> bcb9d31407ab12c18f7bc97299a31c814d44efc9
 
 
   /*
