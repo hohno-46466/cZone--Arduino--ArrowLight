@@ -181,7 +181,7 @@ boolean flagLED = false;
 void loop() {
 
   int val1 = 0, val2 = 0;
-  static int prev1 = -9; // , prev2 = -9;
+  static int prev1 = -9, prev2 = -9;
   static boolean flag = false;
   int32_t tmpT = 0;
 
@@ -211,22 +211,31 @@ void loop() {
     if ((n = sscanf(str.c_str(), "%d %d %d %d", &tmpVal1, &tmpVal2, &tmpd10, &tmpd01)) > 0) { // Light Buzzer Digit1 Digit2
 
       // この時点で少なくとも n == 1 なのでとりあえず val1 と val2 はスキャンして得た第１文字列にする
-      val1 = tmpVal1;
-      val2 = val1;
+			if (tmpVal1 >= 0) {
+				val1 = tmpVal1;
+				if (n == 1) {
+					// 第1文字列だけだった場合 val2 は val1 と同じ値にするが val1 が -1 だった場合は val2 は更新しないという仕様のための措置
+					val2 = val1;
+				}
+			}
 
       if (n >= 2) {
         // n が少なくとも 2 なら val2 は第2文字列にする
-        val2 = tmpVal2;
+				if (tmpVal2 >= 0) {
+					val2 = tmpVal2;
+				}
       }
+
       if (n >= 3) {
         // n が少なくとも 3 なら d10 は第3文字列にする
         d10 = tmpd10;
         // endTime3 と endTime4 を設定（endTIme1R 確定後に調整が入ることがある）
-        endTime3 = millis() + DISPLAY_TIME;
+        endTime3 = tmpT + DISPLAY_TIME;
         endTime4 = endTime3 + GUARD_TIME;
-        // flag を立てておく（val1 に変化がなくても d10 に変化があったら 7segment LED の表示を更新する必要があるため）
+        // flag を立てておく（val1 に変化がなくても第３文字列（d10）の指定があったら 7segment LED の表示を更新する必要があるため）
         flag = true;
       }
+
       if (n >= 4) {
         // n が少なくとも 4 なら d01 は第4文字列にする
         d01 = tmpd01;
@@ -234,9 +243,9 @@ void loop() {
     }
     // val1 と val2 から endTimeR（リレー用）と endTimeB（ブザー用）を更新
     //
-    // val1 == 0 : turn off the light
-    // val1 > 0  : turn on the light up to val1/10 sec.
-    // val1 < 0  : do nothing for the light
+    // val1 == 0 : turn off the relay (light)
+    // val1 > 0  : turn on the right (light) up to val1/10 sec.
+    // val1 < 0  : do nothing for the relay (light)
     //
     // val2 == 0 : turn off the buzzer
     // val2 > 0  : turn on the buzzer up to val1/10 sec.
@@ -250,7 +259,7 @@ void loop() {
     }
 
     // endTime3 が短かくなりすぎないように調整
-		//（少なくともリレーがオンの間は 7segment LED には指定した文字が表示されているようにする）
+		//（リレーがオンの間は 7segment LED には指定した文字が表示されているようにするため）
     if (endTime1R > endTime3) {
       endTime3 = endTime1R;
       endTime4 = endTime3 + GUARD_TIME;
@@ -262,15 +271,16 @@ void loop() {
       endTime1B = tmpT + BEEP_LIMIT;
     }
 
-    // val1 が更新されていたか flag が立っていたら 取得した情報を表示
-    if ((val1 != prev1) || flag) {
+    // val1 か val2 が更新されていたか flag が立っていたら 取得した情報を表示
+    if ((val1 != prev1) || (val2 != prev2) || flag) {
       Serial.print(n);    Serial.print(" ");
       Serial.print(val1); Serial.print(" ");
       Serial.print(val2); Serial.print(" ");
       Serial.print(d10);  Serial.print(" ");
       Serial.print(d01);  Serial.println();
-      // prev1 を更新
+      // prev1 と prev2 を更新
       prev1 = val1;
+			prev2 = val2;
       // flag を下げる
       flag = false;
     }
