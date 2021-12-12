@@ -46,7 +46,7 @@ const int PIN_GND   =  9;
     D4 - LED on GBKA
     D5 - Piezo Buzzer on GBKA
     D6 - Button on GBKA
-    D7~13  - (not used)
+    D7~13 - (not used)
     A0 - Rotary Potentiometer
     A1 - (not used)
     A2 - Sound
