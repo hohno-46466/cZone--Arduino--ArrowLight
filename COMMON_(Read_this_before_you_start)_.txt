@@ -6,8 +6,7 @@
 In this folder, you need to prepare a symbolic link from here to the directory where the contents of COMMON are available. 
 The name of the symbolic link must be "COMMON".
 
-
-The following is one example:
+The following is an example of the symbolic link:
 
   COMMON -> ../cZone--Arduino--COMMON/src/COMMON
 
