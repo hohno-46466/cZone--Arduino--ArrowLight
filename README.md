@@ -4,40 +4,38 @@ ArrowLight module for Arduino
 
 
     cZone--Arduino--ArrowLight
-     ├── COMMON_(Read_this_before_you_start)_
+     ├── COMMON -> ../cZone--Arduino--COMMON/src/COMMON
+     ├── COMMON_(Read_this_before_you_start)_.txt
      ├── docs
      │   └── README.md
      ├── misc
      │   └── README.md
-     ├── ==PrivateRepository==
      ├── README.md
+     ├── replaceCOMMON.bat
      └── src
+         ├── QQ-74HC595.sh
          ├── README.md
          ├── sketch_20210906a_74HC595
+         │   ├── config.h -> ../../COMMON/config.h
+         │   ├── debugLevel.h -> ../../COMMON/debugLevel.h
+         │   ├── mydefs.h -> ../../COMMON/mydefs.h
+         │   ├── myfuncs.cpp -> ../../COMMON/myfuncs.cpp
+         │   ├── myfuncs.h -> ../../COMMON/myfuncs.h
+         │   ├── myLED14segData.h -> ../../COMMON/myLED14segData.h
+         │   ├── myLED16segData.h -> ../../COMMON/myLED16segData.h
+         │   ├── myLED7segData.h -> ../../COMMON/myLED7segData.h
+         │   ├── myNewClass.cpp -> ../../COMMON/myNewClass.cpp
+         │   ├── myNewClass.h -> ../../COMMON/myNewClass.h
+         │   ├── myself.cpp -> ../../COMMON/myself.cpp
+         │   ├── myself.h
+         │   ├── myself-sample.h -> ../../COMMON/myself.h
+         │   ├── myTimezone.h -> ../../COMMON/myTimezone.h
+         │   ├── secret.h -> ../../COMMON/secret.h
          │   └── sketch_20210906a_74HC595.ino
          └── sketch_20210926a_sampleSketch1
              └── sketch_20210926a_sampleSketch1.ino
      
-     5 directories, 8 files (Thu Oct 14 07:52:44 JST 2021)
-
-
-    cZone--Arduino--ArrowLight
-     ├── COMMON_(Read_this_before_you_start)_
-     ├── docs
-     │   └── README.md
-     ├── misc
-     │   └── README.md
-     ├── ==PrivateRepository==
-     ├── README.md
-     └── src
-         ├── README.md
-         ├── sketch_20210906a_74HC595
-         │   ├── 00doit.sh
-         │   └── sketch_20210906a_74HC595.ino
-         └── sketch_20210926a_sampleSketch1
-             └── sketch_20210926a_sampleSketch1.ino
-     
-     5 directories, 9 files (Tue Nov 16 09:29:35 JST 2021)
+     6 directories, 25 files (Mon Dec 13 09:22:48 JST 2021)
 
 -EOF-
 
