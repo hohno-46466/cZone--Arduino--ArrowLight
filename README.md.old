@@ -3,39 +3,268 @@
 ArrowLight module for Arduino
 
     ./cZone--Arduino--ArrowLight
-     ├──   COMMON -> ../cZone--Arduino--COMMON/src/All_Arduinos
-     ├──   COMMON_(Read_this_before_you_start)_.txt
-     ├──   README.md
-     ├──   README.md.old
+     ├──  COMMON -> ../cZone--Arduino--COMMON/src/All_Arduinos
+     ├──  COMMON_(Read_this_before_you_start)_.txt
+     ├──  README.md
+     ├──  README.md.old
      ├──  docs/
-     │   └──   README.md
+     │   └──  README.md
      ├──  misc/
-     │   └──   README.md
-     ├──   replaceCOMMON.bat
+     │   └──  README.md
+     ├──  replaceCOMMON.bat
      └──  src/
-         ├──   QQ-74HC595.sh
-         ├──   README.md
+         ├──  QQ-74HC595.sh
+         ├──  README.md
          ├──  sketch_20210906a_74HC595/
-         │   ├──   config.h -> ../../COMMON/config.h
-         │   ├──   debugLevel.h -> ../../COMMON/debugLevel.h
-         │   ├──   myLED14segData.h -> ../../COMMON/myLED14segData.h
-         │   ├──   myLED16segData.h -> ../../COMMON/myLED16segData.h
-         │   ├──   myLED7segData.h -> ../../COMMON/myLED7segData.h
-         │   ├──   myNewClass.cpp -> ../../COMMON/myNewClass.cpp
-         │   ├──   myNewClass.h -> ../../COMMON/myNewClass.h
-         │   ├──   myTimezone.h -> ../../COMMON/myTimezone.h
-         │   ├──   mydefs.h -> ../../COMMON/mydefs.h
-         │   ├──   myfuncs.cpp -> ../../COMMON/myfuncs.cpp
-         │   ├──   myfuncs.h -> ../../COMMON/myfuncs.h
-         │   ├──   myself-sample.h -> ../../COMMON/myself.h
-         │   ├──   myself.cpp -> ../../COMMON/myself.cpp
-         │   ├──   myself.h
-         │   ├──   secret.h -> ../../COMMON/secret.h
-         │   └──   sketch_20210906a_74HC595.ino
+         │   ├──  config.h -> ../../COMMON/config.h
+         │   ├──  debugLevel.h -> ../../COMMON/debugLevel.h
+         │   ├──  myLED14segData.h -> ../../COMMON/myLED14segData.h
+         │   ├──  myLED16segData.h -> ../../COMMON/myLED16segData.h
+         │   ├──  myLED7segData.h -> ../../COMMON/myLED7segData.h
+         │   ├──  myNewClass.cpp -> ../../COMMON/myNewClass.cpp
+         │   ├──  myNewClass.h -> ../../COMMON/myNewClass.h
+         │   ├──  myTimezone.h -> ../../COMMON/myTimezone.h
+         │   ├──  mydefs.h -> ../../COMMON/mydefs.h
+         │   ├──  myfuncs.cpp -> ../../COMMON/myfuncs.cpp
+         │   ├──  myfuncs.h -> ../../COMMON/myfuncs.h
+         │   ├──  myself-sample.h -> ../../COMMON/myself.h
+         │   ├──  myself.cpp -> ../../COMMON/myself.cpp
+         │   ├──  myself.h
+         │   ├──  secret.h -> ../../COMMON/secret.h
+         │   └──  sketch_20210906a_74HC595.ino
          └──  sketch_20210926a_sampleSketch1/
-             └──   sketch_20210926a_sampleSketch1.ino
+             └──  sketch_20210926a_sampleSketch1.ino
      
-     6 directories, 25 files (Wed Jul 13 17:14:05 JST 2022)
+     6 directories, 25 files (Wed Jul 13 17:52:16 JST 2022)
+
+    ./cZone--Arduino--COMMON
+     ├──  ==PrivateRepository==
+     ├──  README.md
+     ├──  README.md.old
+     ├──  docs/
+     │   └──  README.md
+     ├──  misc/
+     │   ├──  README.md
+     │   ├──  arduino-fusebit-settings.txt
+     │   └──  hardware/
+     │       └──  arduino/
+     │           └──  avr/
+     └──  src/
+         ├──  All_Arduinos -> COMMON
+         ├──  COMMON/
+         │   ├──  MEMO-structs,defs,funcs,libraries.txt
+         │   ├──  Makefile.platformio
+         │   ├──  README.md
+         │   ├──  checkDir.sh
+         │   ├──  config.h
+         │   ├──  debugLevel.h
+         │   ├──  examples/
+         │   │   └──  COMMON_test/
+         │   ├──  myLED14segData.h
+         │   ├──  myLED16segData.h
+         │   ├──  myLED7segData.h
+         │   ├──  myNewClass.cpp
+         │   ├──  myNewClass.h
+         │   ├──  myTimezone.h
+         │   ├──  mydefs.h
+         │   ├──  myfuncs.cpp
+         │   ├──  myfuncs.h
+         │   ├──  myfuncs.ino
+         │   ├──  myself.cpp
+         │   ├──  myself.h
+         │   ├──  secret-SAMPLE.h
+         │   ├──  secret.h -> ../SECRET/secret.h
+         │   ├──  zzIDM.cpp
+         │   └──  zzIDM.h
+         ├──  README.md
+         └──  SECRET/
+             ├──  README.md
+             ├──  secret-ap-dummy.h
+             ├──  secret-ap.h -> secret-ap-dummy.h
+             └──  secret.h -> secret-ap.h
+     
+     11 directories, 33 files (Wed Jul 13 17:52:16 JST 2022)
+
+    ./cZone--Arduino--DateTimeDisplay
+     ├──  ==PrivateRepository==
+     ├──  COMMON_(Read_this_before_you_start)_.txt
+     ├──  CreateCOMMON.bat -> misc/QQ.bat
+     ├──  README.md
+     ├──  README.md.old
+     ├──  docs/
+     │   └──  README.md
+     ├──  foo.bat
+     ├──  misc/
+     │   ├──  QQ.bat
+     │   ├──  README.md
+     │   └──  mkbat4winFS.sh
+     ├──  mkbat4winFS.sh -> misc/mkbat4winFS.sh
+     └──  src/
+         └──  sketch_20201003a_DateTimeDisplay/
+             ├──  GPATH
+             ├──  GRTAGS
+             ├──  GTAGS
+             ├──  Makefile
+             ├──  config.h
+             ├──  debugLevel.h
+             ├──  gtags.conf
+             ├──  include/
+             │   └──  README
+             ├──  lib/
+             │   └──  README
+             ├──  myNewClass.cpp
+             ├──  myNewClass.h
+             ├──  myTimezone.h -> ../../../cZone--Arduino--COMMON/src/All_Arduinos/myTimezone.h
+             ├──  mydefs.h -> ../../../cZone--Arduino--COMMON/src/All_Arduinos/mydefs.h
+             ├──  myfuncs.cpp -> ../../../cZone--Arduino--COMMON/src/All_Arduinos/myfuncs.cpp
+             ├──  myfuncs.h -> ../../../cZone--Arduino--COMMON/src/All_Arduinos/myfuncs.h
+             ├──  myself.cpp -> ../../../cZone--Arduino--COMMON/src/All_Arduinos/myself.cpp
+             ├──  myself.h
+             ├──  platformio.ini
+             ├──  sketch_20201003a_DateTimeDisplay.ino
+             ├──  sketch_20201003a_DateTimeDisplay.ino-20201021-0509
+             └──  test/
+                 └──  README
+     
+     7 directories, 32 files (Wed Jul 13 17:52:17 JST 2022)
+
+    ./cZone--Arduino--TEMPLATE
+     ├──  99.bat
+     ├──  COMMON -> ../cZone--Arduino--COMMON/src/All_Arduinos
+     ├──  COMMON_(Read_this_before_you_start)_.txt
+     ├──  CreateCOMMON.bat -> misc/QQ.bat
+     ├──  README.md
+     ├──  README.md.old
+     ├──  READMEforWindows.md
+     ├──  docs/
+     │   └──  README.md
+     ├──  misc/
+     │   ├──  QQ.bat
+     │   ├──  README.md
+     │   └──  mkbat4winFS.sh
+     ├──  mkbat4winFS.sh -> misc/mkbat4winFS.sh
+     └──  src/
+         ├──  README.md
+         └──  sketch_21mmdda_example1/
+             ├──  99.bat
+             ├──  config.h -> ../../COMMON/config.h
+             ├──  debugLevel.h -> ../../COMMON/debugLevel.h
+             ├──  myNewClass.cpp -> ../../COMMON/myNewClass.cpp
+             ├──  myNewClass.h -> ../../COMMON/myNewClass.h
+             ├──  mydefs.h -> ../../COMMON/mydefs.h
+             ├──  myself.cpp -> ../../COMMON/myself.cpp
+             ├──  myself.h
+             └──  sketch_21mmdda_example1.ino
+     
+     5 directories, 21 files (Wed Jul 13 17:52:17 JST 2022)
+
+    ./cZone--Arduino--variousPrivateSketches
+     ├──  ==PrivateRepository==
+     ├──  README.md
+     └──  README.md.old
+     
+     0 directories, 3 files (Wed Jul 13 17:52:17 JST 2022)
+
+    ./cZone--Arduino--variousSketches
+     ├──  README.md
+     ├──  README.md.old
+     └──  test.txt
+     
+     0 directories, 3 files (Wed Jul 13 17:52:17 JST 2022)
+
+    ./cZone--Arduino--zzRTC
+     ├──  README-old.md
+     ├──  README.md
+     ├──  README.md.old
+     ├──  examples/
+     │   └──  zzRTC_test/
+     │       └──  zzRTC_test.ino
+     ├──  zzRTC-memo.txt
+     ├──  zzRTC.cpp
+     ├──  zzRTC.h
+     └──  zzRTC.md
+     
+     2 directories, 8 files (Wed Jul 13 17:52:17 JST 2022)
+
+    ./cZone--Processing3--MQTTclock
+     ├──  ==PrivateRepository==
+     ├──  QQ-MQTTclock1.sh
+     ├──  README.md
+     ├──  README.md.old
+     ├──  ignoreMe/
+     │   └──  00doit-1.sh
+     └──  src/
+         ├──  sketch_20190506a_MQTTclock1/
+         │   ├──  MQTTclockSub.pde
+         │   ├──  README.md
+         │   ├──  drawClock.pde
+         │   ├──  myString.pde
+         │   └──  sketch_20190506a_MQTTclock1.pde
+         └──  sketch_20211227a_MQTTclock2/
+             └──  README.md
+     
+     4 directories, 11 files (Wed Jul 13 17:52:17 JST 2022)
+
+    ./cZone--Processing3--MQTTclock1
+     ├──  ==PrivateRepository==
+     ├──  QQ-MQTTclock1.sh
+     ├──  README.md
+     ├──  README.md.old
+     ├──  ignoreMe/
+     │   └──  00doit-1.sh
+     └──  src/
+         ├──  sketch_20190506a_MQTTclock1/
+         │   ├──  MQTTclockSub.pde
+         │   ├──  README.md
+         │   ├──  drawClock.pde
+         │   ├──  myString.pde
+         │   └──  sketch_20190506a_MQTTclock1.pde
+         └──  sketch_20211227a_MQTTclock2/
+             └──  README.md
+     
+     4 directories, 11 files (Wed Jul 13 17:52:17 JST 2022)
+
+    ./cZone--Processing3--tamaClock
+     ├──  README.md
+     ├──  README.md.old
+     ├──  tamaClock/
+     │   ├──  clock.mov
+     │   ├──  data/
+     │   │   ├──  00doit.sh
+     │   │   ├──  01doit.sh
+     │   │   ├──  misc/
+     │   │   ├──  tamahime-1080x450.png
+     │   │   ├──  tamahime-360x447-Azusa.png
+     │   │   ├──  tamahime-360x447-amimami.png
+     │   │   ├──  tamahime-360x447-chihaya.png
+     │   │   ├──  tamahime-360x447-haruka.png
+     │   │   ├──  tamahime-360x447-hibiki.png
+     │   │   ├──  tamahime-360x447-iori.png
+     │   │   ├──  tamahime-360x447-makoto.png
+     │   │   ├──  tamahime-360x447-miki.png
+     │   │   ├──  tamahime-360x447-ritsuko.png
+     │   │   ├──  tamahime-360x447-takane.png
+     │   │   ├──  tamahime-360x447-yayoi.png
+     │   │   ├──  tamahime-360x447-yukiho.png
+     │   │   ├──  tamahime-360x450.png
+     │   │   ├──  tamahime-4680x447-765AS.png
+     │   │   ├──  tamahime-4680x450.png
+     │   │   └──  tamahime.png
+     │   ├──  keyInput.pde
+     │   ├──  sketch.properties
+     │   ├──  tamaClock.pde
+     │   ├──  tamaClock.pde-20210822-2344
+     │   └──  tamaClock.xxx
+     ├──  tamaClock.sh
+     └──  tamaClock4iPad/
+         ├──  data/
+         │   ├──  tamahime-360x450.png
+         │   └──  tamahime-4680x447-765AS.png
+         ├──  keyInput.pde
+         ├──  tamaClock.pde.prev
+         └──  tamaClock4iPad.pde
+     
+     5 directories, 33 files (Wed Jul 13 17:52:17 JST 2022)
 
 
 -EOF-
