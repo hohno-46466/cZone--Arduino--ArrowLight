@@ -40,3 +40,6 @@ ArrowLight module for Arduino
 
 
 -EOF-
+
+# Note: url = git@github.com:hohno-46466/cZone--Arduino--ArrowLight.git
+# Note: url = https://github.com/hohno-46466/cZone--Arduino--ArrowLight
