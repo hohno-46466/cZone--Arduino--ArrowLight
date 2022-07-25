@@ -39,7 +39,8 @@ ArrowLight module for Arduino
      6 directories, 26 files (Wed Jul 13 18:57:53 JST 2022)
 
 
--EOF-
+Note: url = https://github.com/hohno-46466/cZone--Arduino--ArrowLight
 
-# Note: url = git@github.com:hohno-46466/cZone--Arduino--ArrowLight.git
-# Note: url = https://github.com/hohno-46466/cZone--Arduino--ArrowLight
+Note: url = git@github.com:hohno-46466/cZone--Arduino--ArrowLight.git
+
+-EOF-
