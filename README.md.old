@@ -2,7 +2,7 @@
 
 ArrowLight module for Arduino
 
-    ./cZone--Arduino--ArrowLight/
+    ./cZone--Arduino--ArrowLight
      ├──  COMMON_(Read_this_before_you_start)_.txt
      ├──  README.md
      ├──  README.md.old
@@ -34,7 +34,7 @@ ArrowLight module for Arduino
          └──  sketch_20210926a_sampleSketch1/
              └──  sketch_20210926a_sampleSketch1.ino
      
-     5 directories, 25 files (Tue Aug 30 13:17:42 JST 2022)
+     5 directories, 25 files (Sat Sep  3 17:32:43 JST 2022)
 
 
 Note: URL = https://github.com/hohno-46466/cZone--Arduino--ArrowLight
